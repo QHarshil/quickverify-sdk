@@ -93,4 +93,4 @@ async function verify() {
 2. Ensure you are opening the `.xcworkspace` file, not the `.xcodeproj` file.
 3. Check that the Swift version in the Podspec matches your project's Swift version.
 
-For further assistance, please open an issue on our [GitHub repository](https://github.com/quickverify/react-native-sdk/issues).
+For further assistance, please open an issue on our [GitHub repository](https://github.com/QHarshil/quickverify-sdk/issues).

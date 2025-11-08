@@ -23,7 +23,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/quickverify/react-native-sdk.git"
+    "url": "https://github.com/QHarshil/quickverify-sdk.git"
   },
   "peerDependencies": {
     "react": ">=17.0.0",

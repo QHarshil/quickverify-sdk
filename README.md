@@ -397,8 +397,8 @@ MIT License - see LICENSE file for details.
 ## Support
 
 For issues and questions:
-- GitHub Issues: https://github.com/quickverify/react-native-sdk/issues
-- Landing page source: `quickverify-complete/quickverify-landing`
+- GitHub Issues: https://github.com/QHarshil/quickverify-sdk/issues
+- Landing page repo: https://github.com/QHarshil/quickverify-landing
 
 ## Changelog
 
