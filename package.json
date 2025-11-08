@@ -1,0 +1,50 @@
+{
+  "name": "@quickverify/react-native-sdk",
+  "version": "1.0.0",
+  "description": "Lightweight mobile identity verification SDK for React Native with native iOS support",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "jest",
+    "lint": "eslint src --ext .ts,.tsx"
+  },
+  "keywords": [
+    "react-native",
+    "ios",
+    "identity-verification",
+    "document-capture",
+    "face-id",
+    "biometric-authentication",
+    "sdk"
+  ],
+  "author": "QuickVerify Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quickverify/react-native-sdk.git"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-native": ">=0.70.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-native": "^0.73.0",
+    "typescript": "^5.3.0",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.14",
+    "ts-jest": "^29.2.5"
+  },
+  "files": [
+    "lib",
+    "ios",
+    "android",
+    "quickverify-sdk.podspec",
+    "README.md"
+  ]
+}
