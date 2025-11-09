@@ -2,6 +2,8 @@
 
 A lightweight, portfolio-ready identity verification SDK for React Native with native Swift **and** Kotlin bridges backed by a typed TypeScript surface.
 
+Live landing page: https://qharshil.ca/quickverify
+
 ## Features
 
 - **Cross-platform native modules**: Swift 5.9 on iOS and Kotlin/Jetpack on Android with a shared React Native module name.
@@ -107,9 +109,6 @@ Automated tooling lives in `package.json` and is exercised on every edit. Latest
 npm run test   # Jest + ts-jest unit tests (pass)
 npm run build  # TypeScript build that emits lib/
 
-# Landing site sanity check
-cd ../quickverify-complete/quickverify-landing
-npm run build  # Vite production build (pass)
 ```
 
 Lockfiles for both packages are committed so reviewers can reproduce these commands exactly.
