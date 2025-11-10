@@ -1,0 +1,62 @@
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+platform :ios, '13.0'
+install! 'cocoapods', :deterministic_uuids => false
+
+def patch_boost_spec!
+  boost_spec = File.join(__dir__, '..', 'node_modules', 'react-native', 'third-party-podspecs', 'boost.podspec')
+  return unless File.exist?(boost_spec)
+
+  contents = File.read(boost_spec)
+  desired_source = <<~RUBY
+  spec.source = {
+    :http => 'https://archives.boost.io/release/1.76.0/source/boost_1_76_0.tar.bz2',
+    :sha256 => 'f0397ba6e982c4450f27bf32a2a83292aba035b827a5623a14636ea583318c41'
+  }
+  RUBY
+  desired_source = desired_source.gsub(/^/, '  ') + "\n"
+
+  unless contents.include?('archives.boost.io/release/1.76.0/source/boost_1_76_0.tar.bz2')
+    contents = contents.sub(/spec\.source\s*=\s*\{[^\}]+\}/m, desired_source)
+    File.write(boost_spec, contents)
+  end
+end
+
+patch_boost_spec!
+
+target 'QuickVerifyPlayground' do
+  config = use_native_modules!
+
+  flags = get_default_flags()
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :hermes_enabled => true,
+    :fabric_enabled => flags[:fabric_enabled],
+    :flipper_configuration => FlipperConfiguration.disabled,
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  target 'QuickVerifyPlaygroundTests' do
+    inherit! :complete
+  end
+
+  post_install do |installer|
+    react_native_post_install(
+      installer,
+      :mac_catalyst_enabled => false
+    )
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
+    flag = '-D_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION'
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        existing = config.build_settings['OTHER_CPLUSPLUSFLAGS'] || '$(inherited)'
+        next if existing.include?(flag)
+
+        config.build_settings['OTHER_CPLUSPLUSFLAGS'] = "#{existing} #{flag}"
+      end
+    end
+  end
+end
