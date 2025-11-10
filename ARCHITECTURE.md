@@ -88,18 +88,30 @@ The TypeScript layer provides a developer-friendly API with full type safety.
 
 ### 4. Example Application
 
-**Location:** `example/`
+**Location:** `QuickVerifyPlayground/`
 
-The example app demonstrates SDK integration and best practices.
+The playground app demonstrates SDK integration and best practices.
 
 #### Components
 
-- **App.tsx**: Sets up routing between the overview, action, and results screens.
-- **screens/HomeScreen.tsx**: Displays biometric availability and entry CTA.
-- **screens/VerificationScreen.tsx**: Hosts the buttons that trigger each SDK feature.
-- **screens/ResultScreen.tsx**: Presents the payload from the last action.
+- **App.js**: Sets up routing between the overview, action, and results screens.
+- **screens/HomeScreen.js**: Displays biometric availability and entry CTA.
+- **screens/VerificationScreen.js**: Hosts the buttons that trigger each SDK feature.
+- **screens/ResultScreen.js**: Presents the payload from the last action.
 
 State is managed with local React hooks—no Redux or global store required.
+
+#### Running the playground
+
+```bash
+npm install && npm run build
+cd QuickVerifyPlayground
+npm install
+npx pod-install --repo-update
+npm run ios -- --simulator "iPhone 17"   # or npm run android
+```
+
+Run Metro from `QuickVerifyPlayground/` with `npx react-native start --reset-cache` so it picks up the custom resolver. The playground scripts call `scripts/ensure-sdk-built.js` before bundling, but if you bypass the scripts make sure `npm run build` has been executed at the SDK root so `lib/` is fresh.
 
 ## Data Flow
 
@@ -172,22 +184,9 @@ Abstracts platform-specific implementations behind a unified TypeScript interfac
 - Developer controls image lifecycle
 - Temporary files cleaned up automatically
 
-## Performance Characteristics
+## Performance characteristics
 
-### Camera Preview
-- 30 FPS real-time preview
-- Minimal latency for document detection
-- Efficient memory usage (< 50 MB)
-
-### Biometric Authentication
-- < 1 second response time
-- Native iOS performance
-- No additional overhead
-
-### Document Processing
-- < 2 seconds for edge detection
-- On-device Vision framework processing
-- No network dependency
+Performance depends on device hardware, OS version, and workload. The SDK aims for real-time preview and on-device processing; measure performance on target devices and adjust configuration (captureQuality, resolution) as needed.
 
 ## Testing Strategy
 
@@ -206,19 +205,19 @@ Abstracts platform-specific implementations behind a unified TypeScript interfac
 - Visual verification of UI
 - Real device testing
 
-## Future Enhancements
+## Potential enhancements
 
-### Planned Features
-- Vision-style edge overlay on Android to match the iOS UX
-- Additional document type presets (passport, driver's license, etc.)
-- OCR + liveness utilities as optional add-ons
-- Detox/e2e coverage for the React Native example
+The following items are possible future work or suggestions for improvement. They are not implemented in this repository unless explicitly added.
 
-### Architecture Evolution
-- Modular plugin system
-- Configurable processing pipeline
-- Enhanced error recovery
-- Offline mode support
+- Edge overlay on Android to align UX with the iOS implementation.
+- Additional document type presets (passport, driver's license, etc.).
+- Optional OCR and liveness modules.
+- Automated end-to-end tests for the example app (Detox, WebDriverIO, or similar).
+
+Architectural considerations for future work:
+
+- Make processing steps configurable via a pipeline to allow customization.
+- Consider a modular plugin approach for optional features.
 
 ## Dependencies
 

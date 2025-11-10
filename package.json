@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Lightweight mobile identity verification SDK for React Native with native iOS support",
   "main": "lib/index.js",
+  "react-native": "src/index.ts",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
@@ -44,6 +45,7 @@
     "lib",
     "ios",
     "android",
+    "src",
     "quickverify-sdk.podspec",
     "README.md"
   ]

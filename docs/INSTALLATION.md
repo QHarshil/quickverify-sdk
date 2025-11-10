@@ -79,6 +79,26 @@ async function verify() {
 }
 ```
 
+## 5. Running the Playground app
+
+The `QuickVerifyPlayground/` directory contains a fully configured React Native app that consumes the SDK via `file:..`. To run it locally:
+
+```bash
+npm install                # from the SDK root
+npm run build              # generates lib/ which Metro will load
+
+cd QuickVerifyPlayground
+npm install
+npx pod-install --repo-update   # first run patches boost + installs pods
+npm run ios -- --simulator "iPhone 17"   # or: npm run android
+```
+
+Re-run `npm run build` at the root whenever you change the SDK so that the playground picks up the latest JS bridge.
+
+> **Note:** The Podfile automatically rewrites React Native's bundled `boost.podspec` to download the official `boost_1_76_0.tar.bz2` archive (with a verified SHA) and adds the required C++17 compatibility flag. Flipper is disabled to keep the pod set compatible with modern Xcode versions. Always run `npx pod-install --repo-update` after installing JS dependencies so the patch can apply before CocoaPods resolves dependencies.
+
+> **Metro tip:** The playground now ships with a monorepo-aware `metro.config.js` that explicitly watches the SDK root and pins `@quickverify/react-native-sdk` to the compiled `lib/index.js`. Whenever you change the SDK, rerun `npm run build` at the root so Metro sees fresh output, then restart the bundler with `npx react-native start --reset-cache` (freeing port 8081 first with `lsof -n -i :8081 | xargs kill` if needed).
+
 ## Troubleshooting
 
 ### `pod install` fails

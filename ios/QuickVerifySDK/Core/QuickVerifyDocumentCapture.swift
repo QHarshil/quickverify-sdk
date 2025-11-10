@@ -3,8 +3,8 @@ import UIKit
 import AVFoundation
 import Vision
 
-typealias CaptureCompletion = (Bool, String?, [[String: CGFloat]]?, Error?) -> Void
-typealias EventHandler = (String, Any?) -> Void
+public typealias CaptureCompletion = (Bool, String?, [[String: CGFloat]]?, Error?) -> Void
+public typealias EventHandler = (String, Any?) -> Void
 
 @objc(QuickVerifyDocumentCapture)
 public class QuickVerifyDocumentCapture: NSObject {

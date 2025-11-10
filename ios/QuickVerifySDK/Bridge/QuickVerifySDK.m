@@ -1,5 +1,5 @@
 #import "QuickVerifySDK.h"
-#import "QuickVerifySDK-Swift.h"
+#import "quickverify_sdk-Swift.h"
 
 @implementation QuickVerifySDK
 
@@ -49,9 +49,9 @@ RCT_EXPORT_METHOD(captureDocument:(NSDictionary *)config
     dispatch_async(dispatch_get_main_queue(), ^{
         UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
         
-        [QuickVerifyDocumentCapture presentCaptureFromViewController:rootViewController
-                                                          config:config
-                                                      completion:^(BOOL success, NSString * _Nullable imageUri, NSArray * _Nullable corners, NSError * _Nullable error) {
+        [QuickVerifyDocumentCapture presentCaptureFrom:rootViewController
+                                                config:config
+                                            completion:^(BOOL success, NSString * _Nullable imageUri, NSArray * _Nullable corners, NSError * _Nullable error) {
             if (success) {
                 NSMutableDictionary *result = [NSMutableDictionary dictionary];
                 result[@"success"] = @YES;
@@ -75,4 +75,3 @@ RCT_EXPORT_METHOD(captureDocument:(NSDictionary *)config
 }
 
 @end
-

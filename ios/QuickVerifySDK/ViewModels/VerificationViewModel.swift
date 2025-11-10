@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 @objc(VerificationViewModel)
-public class VerificationViewModel: ObservableObject {
+public class VerificationViewModel: NSObject, ObservableObject {
     
     @Published var isProcessing: Bool = false
     @Published var verificationState: VerificationState = .idle
@@ -19,7 +19,9 @@ public class VerificationViewModel: ObservableObject {
         case failed
     }
     
-    public init() {}
+    public override init() {
+        super.init()
+    }
     
     public func startVerification() {
         verificationState = .authenticating
@@ -47,4 +49,3 @@ public class VerificationViewModel: ObservableObject {
         errorMessage = nil
     }
 }
-

@@ -1,17 +1,14 @@
 # QuickVerify React Native SDK
 
-A lightweight, portfolio-ready identity verification SDK for React Native with native Swift **and** Kotlin bridges backed by a typed TypeScript surface.
+This repository contains a React Native SDK that exposes native functionality for biometric authentication and document capture on iOS (Swift) and Android (Kotlin). It provides a TypeScript interface and a small sample app in `QuickVerifyPlayground/` for local testing.
 
-Live landing page: https://qharshil.ca/quickverify
+## Capabilities
 
-## Features
-
-- **Cross-platform native modules**: Swift 5.9 on iOS and Kotlin/Jetpack on Android with a shared React Native module name.
-- **Biometric authentication**: Face ID + Touch ID via `LocalAuthentication` plus Android's `BiometricPrompt`.
-- **Document capture**: Vision-based edge detection on iOS and high-resolution camera capture on Android with real file persistence.
-- **Real-time events**: Document detection + processing callbacks exposed to JS through `NativeEventEmitter`.
-- **Typed SDK + hooks**: Singleton helper, React hook, and full `.d.ts` coverage.
-- **Example application**: Multi-screen React Native demo that exercises every SDK call.
+- Cross-platform native modules (iOS Swift, Android Kotlin).
+- Biometric authentication support (Face ID / Touch ID on iOS; BiometricPrompt on Android).
+- Document capture with edge detection and an API that returns a local file URI.
+- Event callbacks for document detection and processing via `NativeEventEmitter`.
+- TypeScript definitions and a sample playground app.
 
 ## Installation
 
@@ -27,22 +24,24 @@ npm install @quickverify/react-native-sdk
 yarn add @quickverify/react-native-sdk
 ```
 
-### iOS Setup
+### iOS setup
+
+1. Install CocoaPods dependencies from the app directory:
 
 ```bash
 cd ios && pod install
 ```
 
-Add the following to your `Info.plist`:
+2. Add required Info.plist keys to describe usage (example):
 
 ```xml
 <key>NSCameraUsageDescription</key>
 <string>Camera access is required to capture identity documents</string>
 <key>NSFaceIDUsageDescription</key>
-<string>Face ID is used to verify your identity</string>
+<string>Face ID is used to verify identity</string>
 ```
 
-### Android Setup
+### Android setup
 
 1. Declare camera permission in `android/app/src/main/AndroidManifest.xml`:
 
@@ -50,56 +49,75 @@ Add the following to your `Info.plist`:
 <uses-permission android:name="android.permission.CAMERA" />
 ```
 
-2. Request the permission at runtime before calling `captureDocument` (the SDK will surface an error if it is missing).
-3. Ensure your project uses `compileSdkVersion`/`targetSdkVersion` 34 or newer so the library Gradle config matches.
+2. Request the permission at runtime before calling `captureDocument`.
+3. Ensure your app's `compileSdkVersion`/`targetSdkVersion` is recent enough to match the SDK Gradle configuration (API 33+ is recommended).
 
-## Quick Start
+## Quick start
 
-### Basic Usage
+Below are minimal usage examples. Adjust to match your application's structure.
+
+Basic usage (full verification):
 
 ```typescript
 import { QuickVerifySDK } from '@quickverify/react-native-sdk';
 
-// Initialize SDK
-const sdk = QuickVerifySDK.getInstance({
-  enableFaceID: true,
-  captureQuality: 'high',
-  timeout: 30000,
-});
+const sdk = QuickVerifySDK.getInstance({ enableFaceID: true });
 
-// Perform full verification
 const result = await sdk.performVerification();
-
 if (result.success) {
-  console.log('Verification successful');
-  console.log('Document URI:', result.documentImageUri);
+  // handle success
 }
 ```
 
-### Biometric Authentication Only
+Biometric-only:
 
 ```typescript
 import { authenticateWithBiometric } from '@quickverify/react-native-sdk';
 
-const result = await authenticateWithBiometric('Verify your identity');
-
-if (result.success) {
-  console.log('Authenticated with:', result.biometryType);
+const res = await authenticateWithBiometric('Verify your identity');
+if (res.success) {
+  // handle biometric success
 }
 ```
 
-### Document Capture Only
+Document capture only:
 
 ```typescript
 import { captureDocument } from '@quickverify/react-native-sdk';
 
-const result = await captureDocument();
-
-if (result.success) {
-  console.log('Document captured:', result.imageUri);
-  console.log('Detected corners:', result.corners);
+const res = await captureDocument();
+if (res.success) {
+  // process res.imageUri
 }
 ```
+
+## Playground app (local test)
+
+The `QuickVerifyPlayground/` folder contains a React Native app that exercises the SDK APIs. To run it locally:
+
+```bash
+# From the SDK root
+npm install
+npm run build    # produce lib/
+
+cd QuickVerifyPlayground
+npm install
+npx pod-install --repo-update   # macOS / iOS only
+npx react-native run-ios --simulator "iPhone 17"  # or run-android
+```
+
+Notes:
+- The playground depends on the local package via `file:..`. Re-run `npm run build` at the SDK root when you change SDK sources.
+- Start Metro from the playground directory with `npx react-native start --reset-cache` if you run it manually.
+
+### Screenshots
+
+The repository includes example simulator screenshots in `public/` that illustrate the playground UI.
+
+<p align="center">
+  <img src="./public/Simulator%20Screenshot%20-%20iPhone%2017%20-%202025-11-09%20at%2021.03.13.png" alt="Playground overview" width="270" />
+  <img src="./public/Simulator%20Screenshot%20-%20iPhone%2017%20-%202025-11-09%20at%2021.01.36.png" alt="Verification flow" width="270" />
+</p>
 
 ## Verification & Tooling
 
@@ -246,24 +264,6 @@ interface VerificationResult {
 - **Type Definitions**: Full TypeScript support
 - **Event System**: Subscribe to document detection and processing events
 
-## Example App
-
-The repository ships with a multi-screen React Native example that:
-
-- Shows an overview screen with biometric availability.
-- Runs full verification, biometric-only, and document-only actions on a dedicated screen.
-- Displays the payload on a results screen so reviewers can inspect the data without digging into logs.
-
-Run it with the usual React Native commands:
-
-```bash
-cd example
-npm install
-cd ios && pod install && cd ..
-npm run ios
-# or npm run android
-```
-
 ## Requirements
 
 - iOS 13.0+ (Swift 5.9 / Xcode 15)
@@ -387,7 +387,7 @@ Check `Info.plist` has `NSCameraUsageDescription` key.
 
 ## Contributing
 
-Contributions are welcome. Please follow the existing code style and include tests for new features.
+To contribute changes, open a pull request and include tests for new features or bug fixes. Follow the existing code style.
 
 ## License
 
@@ -397,7 +397,6 @@ MIT License - see LICENSE file for details.
 
 For issues and questions:
 - GitHub Issues: https://github.com/QHarshil/quickverify-sdk/issues
-- Landing page repo: https://github.com/QHarshil/quickverify-landing
 
 ## Changelog
 
